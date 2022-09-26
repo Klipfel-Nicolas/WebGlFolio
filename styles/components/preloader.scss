@@ -1,7 +1,6 @@
 .preloader{
   @extend %cover;
    @extend %center;
-  display: none;
 
   background: $color-contessa;
   color: $color-quarter-spanish-white;
@@ -10,9 +9,17 @@
 }
 
 .preloader__text{
-  @extend %title-53;
-
+  font-size: 0;
   max-width: 66rem;
+
+  span {
+    display: inline-block;
+    overflow: hidden;
+  }
+
+  span span {
+    @extend %title-53;
+  }
 }
 
 .preloader__number{
@@ -21,6 +28,7 @@
   position: absolute;
   bottom: 7.3rem;
   left: 50%;
+  overflow: hidden;
   transform: translateX(-50%);
 
   @include media('<phone') {
@@ -28,3 +36,6 @@
   }
 }
 
+.preloader__number--text {
+  display: inline-block;
+}

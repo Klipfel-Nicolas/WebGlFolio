@@ -21,6 +21,7 @@
     opacity: 0.5;
   }
 
+
   @include media('<phone') {
     left: 5rem;
     top: 5rem;
@@ -45,7 +46,7 @@
 }
 
 .navigation__list__link {
-/*   @extend %link--hidden; */
+  @extend %link--hidden;
   @extend %title-20;
 
   display: block;

@@ -19,6 +19,7 @@ app.use(express.static(path.join(__dirname, 'public')))// static files deliver (
 
 const Prismic = require('@prismicio/client')
 const PrismicDOM = require('prismic-dom')
+const UAParser = require('ua-parser-js')
 
 const initApi = req => {
   return Prismic.getApi(process.env.PRISMIC_ENDPOINT, {
@@ -44,6 +45,13 @@ const handleLinkResolver = doc => {
 }
 
 app.use((req, res, next) => {
+  // Use to know what kin of device accessing the website (desktop, mobile, etc...) and put class on pug files base (on the html element)
+  const ua = UAParser(req.headers['user-agent'])
+
+  res.locals.isDesktop = ua.device.type === undefined
+  res.locals.isPhone = ua.device.type === 'mobile'
+  res.locals.isTablet = ua.device.type === 'tablet'
+
   // Use for CMS links (like in collections.pug)
   res.locals.Link = handleLinkResolver
 
@@ -108,7 +116,7 @@ app.get('/about', async (req, res) => {
 app.get('/detail/:uid', async (req, res) => {
   const api = await initApi(req)
   const defaults = await handleRequest(api)
-  console.log(defaults)
+
   const product = await api.getByUID('product', req.params.uid, {
     fetchLinks: 'collection.title'
   })

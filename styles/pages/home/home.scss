@@ -1,9 +1,9 @@
 .home {
+  @extend %page;
   @extend %center;
-  @extend %cover;
 
-  background: $color-contessa;
-  color: $color-white;
+  /* background: $color-contessa;
+  color: $color-white; */
   overflow: hidden;
   text-align: center;
 
