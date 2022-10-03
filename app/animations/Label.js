@@ -12,10 +12,10 @@ export default class Label extends Animation {
       elements
     })
 
-    this.elementLinesSpans = split({
+    /* this.elementLinesSpans = split({
       element: this.element,
       append: true
-    })
+    }) */
   }
 
   animateIn () {
@@ -23,11 +23,12 @@ export default class Label extends Animation {
       delay: 0.5
     })
 
-    this.timelineIn.set(this.element, {
-      autoAlpha: 1
+    this.timelineIn.to(this.element, {
+      autoAlpha: 1,
+      duration: 1
     })
 
-    each(this.elementLines, (line, index) => {
+    /* each(this.elementLines, (line, index) => {
       this.timelineIn.fromTo(line, {
         autoAlpha: 0,
         y: '100%'
@@ -38,7 +39,7 @@ export default class Label extends Animation {
         ease: 'expo.out',
         y: '0%'
       }, 0) // 0 => To avoid waiting end of precedent animation
-    })
+    }) */
   }
 
   animateOut () {
@@ -47,7 +48,7 @@ export default class Label extends Animation {
     })
   }
 
-  onResize () {
+  /* onResize () {
     this.elementLines = calculate(this.elementLinesSpans)
-  }
+  } */
 }

@@ -7,24 +7,23 @@
 
 html {
   @extend %cover;
-
-  background: $color-contessa;
-  color: $color-quarter-spanish-white;
-  font-size: calc(100vw / 1920 * 10);// 100vw * 1920(maquette size viewport) / 10 (for 10px normal size for 1rem)
-  line-height: 1;
+  $vw: 100vw;
+  font-size: calc($vw / 1920px * 10px);
   position: fixed;
+  line-height: 1;
   overflow: hidden;
+  background: $color-contessa;
+  color: $color-white;
 
   @include media('<phone') {
-    font-size: calc(100vw / 750px * 10px);
+    font-size: calc($vw / 750px * 10px);
   }
 }
 
 body {
-  @extend %description-16;
   @extend %cover;
-
   font-family: $font-suisse-bp;
+  @extend %description-16;
   position: fixed;
 }
 
@@ -32,6 +31,11 @@ a {
   color: inherit;
   text-decoration: none;
   outline: none;
+}
+
+canvas {
+  pointer-events: none;
+  position: relative;
 }
 
 button {
@@ -42,10 +46,6 @@ button {
   outline: none;
 }
 
-.content {
-  @extend %cover;
-}
-
 img {
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -54,6 +54,10 @@ img {
   &.loaded {
     opacity: 1;
   }
+}
+
+.content {
+  @extend %cover;
 }
 
 [data-animations='paragraph'],

@@ -32,7 +32,7 @@ export default class Tilte extends Animation {
       this.timelineIn.fromTo(line, {
         y: '100%'
       }, {
-        delay: index * 0.1,
+        delay: index * 0.2,
         duration: 1.5,
         ease: 'expo.out',
         y: '0%'

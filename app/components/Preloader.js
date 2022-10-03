@@ -1,3 +1,4 @@
+import { Texture } from 'ogl'
 import Component from 'classes/Component'
 
 import GSAP from 'gsap'
@@ -6,16 +7,19 @@ import each from 'lodash/each'
 import { split } from 'utils/text'
 
 export default class Preloader extends Component {
-  constructor () {
+  constructor ({ canvas }) {
     super({
       element: '.preloader',
       elements: {
         title: '.preloader__text',
         number: '.preloader__number',
-        numberText: '.preloader__number__text',
-        images: document.querySelectorAll('img')
+        numberText: '.preloader__number__text'
       }
     })
+
+    this.canvas = canvas
+
+    window.TEXTURES = {}
 
     // Use utils/text.js to split element en put in span to animate
     split({
@@ -39,9 +43,22 @@ export default class Preloader extends Component {
    * create loader
    */
   createLoader () {
-    each(this.elements.images, element => {
-      element.onload = () => this.onAssetLoaded(element)
-      element.src = element.getAttribute('data-src')
+    window.ASSETS.forEach(image => {
+      const texture = new Texture(this.canvas.gl, {
+        generateMipmaps: false
+      })
+
+      const media = new window.Image()
+      media.crossOrigin = 'anonymous'
+      media.src = image
+
+      media.onload = _ => {
+        texture.image = media
+
+        this.onAssetLoaded()
+      }
+
+      window.TEXTURES[image] = texture
     })
   }
 
@@ -52,7 +69,7 @@ export default class Preloader extends Component {
   onAssetLoaded (image) {
     this.length += 1
 
-    const percent = this.length / this.elements.images.length
+    const percent = this.length / window.ASSETS.length
 
     this.elements.numberText.innerHTML = `${Math.round(percent * 100)}%`
 
@@ -66,8 +83,10 @@ export default class Preloader extends Component {
    */
   onLoaded () {
     return new Promise(resolve => {
+      this.emit('completed')
+
       this.animateOut = GSAP.timeline({
-        delay: 2
+        delay: 1
       })
 
       // Animate out text
@@ -88,14 +107,12 @@ export default class Preloader extends Component {
 
       // Animate out the Preloader page
       this.animateOut.to(this.element, {
-        duration: 1.5,
-        ease: 'expo.out',
-        scaleY: 0,
-        transformOrigin: '100% 100%'
-      }, '-=1')
+        autoAlpha: 0,
+        duration: 1
+      })
 
-      this.animateOut.call(() => {
-        this.emit('completed')
+      this.animateOut.call(_ => {
+        this.destroy()
       })
     })
   }

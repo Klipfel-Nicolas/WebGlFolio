@@ -1,14 +1,13 @@
-.preloader{
+.preloader {
   @extend %cover;
-   @extend %center;
-
+  @extend %center;
   background: $color-contessa;
-  color: $color-quarter-spanish-white;
+  color: $color-white;
   text-align: center;
+
   z-index: z('preloader');
 }
-
-.preloader__text{
+.preloader__text {
   font-size: 0;
   max-width: 66rem;
 
@@ -21,14 +20,12 @@
     @extend %title-53;
   }
 }
-
-.preloader__number{
+.preloader__number {
   @extend %description-14;
-
   position: absolute;
-  bottom: 7.3rem;
-  left: 50%;
   overflow: hidden;
+  bottom: 5.1rem;
+  left: 50%;
   transform: translateX(-50%);
 
   @include media('<phone') {
@@ -36,6 +33,6 @@
   }
 }
 
-.preloader__number--text {
+.preloader__number__text {
   display: inline-block;
 }
